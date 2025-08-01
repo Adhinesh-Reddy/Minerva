@@ -30,7 +30,7 @@ type ComparedTransaction = {
   status: 'match' | 'ledger_only' | 'bank_only';
 };
 
-function cleanAmount(value: String|number): number {
+function cleanAmount(value: string|number): number {
   if (typeof value === 'number') return value;
   if (!value) return 0;
   return parseFloat(String(value).replace(/[^0-9.-]+/g, ''));
