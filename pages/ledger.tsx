@@ -3,6 +3,10 @@ import Papa from 'papaparse';
 
 // Types
 
+type RawCSVRow = {
+  [key: string]: string;
+};
+
 type Receipt = {
   id: string;
   vendor: string;
@@ -26,7 +30,7 @@ type ComparedTransaction = {
   status: 'match' | 'ledger_only' | 'bank_only';
 };
 
-function cleanAmount(value: any): number {
+function cleanAmount(value: String|number): number {
   if (typeof value === 'number') return value;
   if (!value) return 0;
   return parseFloat(String(value).replace(/[^0-9.-]+/g, ''));
@@ -71,7 +75,7 @@ export default function LedgerPage() {
       header: true,
       skipEmptyLines: true,
       complete: function (results) {
-        const parsed = results.data as any[];
+        const parsed = results.data as RawCSVRow[];
         const cleaned: BankTransaction[] = parsed.map((row) => ({
           date: row['Date'] || row['Transaction Date'] || '',
           description: row['Description'] || row['Details'] || '',
